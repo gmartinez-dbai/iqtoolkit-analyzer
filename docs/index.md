@@ -20,6 +20,7 @@
 - [Roadmap](../ROADMAP.md)
 - [Technical Debt](../TECHNICAL_DEBT.md)
 - [Contributing Guide](../CONTRIBUTING.md) 🚀
+- [🛠️ Development Environment Setup](dev-environment-setup.md) ⭐ **New!**
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
 - [Release Process & Versioning](release-process.md)
 - [Configuration Guide](configuration.md)

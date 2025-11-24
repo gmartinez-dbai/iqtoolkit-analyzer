@@ -23,6 +23,7 @@ Welcome to the Iqtoolkit Analyzer documentation! This guide helps you navigate a
 
 ### **For Contributors**
 - [**CONTRIBUTING.md**](CONTRIBUTING.md) - Complete contributor guide with Git Flow, commit conventions, and review process
+- [**Development Environment Setup**](docs/dev-environment-setup.md) - Complete local dev setup (Ubuntu, Ollama, system requirements)
 - [**CODE_OF_CONDUCT.md**](CODE_OF_CONDUCT.md) - Community guidelines and standards
 - [**VERSION_MANAGEMENT.md**](VERSION_MANAGEMENT.md) - Automated version synchronization system
 
@@ -80,6 +81,9 @@ make dev-check         # Full development workflow
 
 #### **Use the Tool**
 → Start with [README.md](README.md) → [Getting Started](docs/getting-started.md) → [PostgreSQL Examples](docs/pg_examples.md)
+
+#### **Set up Development Environment**
+→ [Dev Environment Setup](docs/dev-environment-setup.md) → [Ollama Setup](docs/ollama-local.md) → [Contributing Guide](CONTRIBUTING.md)
 
 #### **Set up AI Provider (Ollama)**
 → Quick start: [5-Minute Setup](docs/5-minute-ollama-setup.md) → Detailed: [Ollama Local Setup](docs/ollama-local.md) → Remote: [Remote Ollama Testing](docs/remote-ollama-testing.md)

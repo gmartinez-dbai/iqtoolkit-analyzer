@@ -15,16 +15,16 @@ Ollama lets you run large language models on your own machine. To use it with th
   - On Linux/Windows: Use the provided launcher or run the same command in your shell.
 
 ## 3. Pull a Model
-- Before you can use a model, you need to download it. For example, to use Llama 2:
+- Before you can use a model, you need to download it. For example, to use the SQL-specialized model:
     ```sh
-    ollama pull arctic-text2sql-r1:7b
+    ollama pull a-kore/Arctic-Text2SQL-R1-7B
     ```
 - You can find other models at https://ollama.com/library
 
 ## 4. Test the Server
 - You can test the server with:
     ```sh
-    ollama run arctic-text2sql-r1:7b
+    ollama run a-kore/Arctic-Text2SQL-R1-7B
     ```
 - Or use the Python client as shown in `scripts/test_ollama.py`.
 

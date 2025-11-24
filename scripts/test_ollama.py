@@ -47,7 +47,7 @@ def test_ollama_connection():
     except Exception as e:
         logger.error(f"❌ Ollama connection failed: {e}")
         logger.error("Make sure Ollama is running: ollama serve")
-        logger.error("And model is pulled: ollama pull arctic-text2sql-r1:7b")
+        logger.error("And model is pulled: ollama pull a-kore/Arctic-Text2SQL-R1-7B")
         return False
 
     return True

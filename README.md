@@ -166,7 +166,7 @@ pip install -e .[dev,test]
 # Quick setup (see docs/5-minute-ollama-setup.md for details)
 curl -LsSf https://ollama.com/install.sh | sh
 ollama serve
-ollama pull arctic-text2sql-r1:7b  # SQL-specialized model (recommended)
+ollama pull a-kore/Arctic-Text2SQL-R1-7B  # SQL-specialized model (recommended)
 
 # Copy example config and customize
 cp .iqtoolkit-analyzer.yml.example .iqtoolkit-analyzer.yml

@@ -1,6 +1,6 @@
 # MongoDB Slow Query Detection Guide
 
-This guide provides comprehensive information on using the Slow Query Doctor for MongoDB performance analysis and optimization.
+This guide provides comprehensive information on using IQToolkit Analyzer for MongoDB performance analysis and optimization.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ This guide provides comprehensive information on using the Slow Query Doctor for
 
 ## Overview
 
-The MongoDB Slow Query Doctor provides comprehensive analysis of MongoDB query performance by:
+IQToolkit Analyzer provides comprehensive analysis of MongoDB query performance by:
 
 - **Profiler Integration**: Connects to MongoDB's built-in profiler to collect query execution data
 - **Pattern Recognition**: Groups similar queries and identifies common performance issues

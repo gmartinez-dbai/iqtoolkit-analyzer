@@ -1,7 +1,7 @@
 # [← Back to Index](index.md)
 # 🚀 Getting Started
 
-Welcome to Slow Query Doctor!
+Welcome to IQToolkit Analyzer!
 
 For a quick overview, see the [Project README](../README.md).
 
@@ -22,8 +22,8 @@ make setup
 ### Option B: Traditional Python (Fallback)
 
 ```bash
-git clone https://github.com/iqtoolkit/slow-query-doctor.git
-cd slow-query-doctor
+git clone https://github.com/iqtoolkit/iqtoolkit-analyzer.git
+cd iqtoolkit-analyzer
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .

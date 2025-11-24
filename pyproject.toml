@@ -79,10 +79,10 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/iqtoolkit/slow-query-doctor"
-Repository = "https://github.com/iqtoolkit/slow-query-doctor"
-Issues = "https://github.com/iqtoolkit/slow-query-doctor/issues"
-Changelog = "https://github.com/iqtoolkit/slow-query-doctor/releases"
+Homepage = "https://github.com/iqtoolkit/iqtoolkit-analyzer"
+Repository = "https://github.com/iqtoolkit/iqtoolkit-analyzer"
+Issues = "https://github.com/iqtoolkit/iqtoolkit-analyzer/issues"
+Changelog = "https://github.com/iqtoolkit/iqtoolkit-analyzer/releases"
 
 [project.scripts]
 iqtoolkit-analyzer = "iqtoolkit_analyzer.__main__:main"
@@ -126,7 +126,7 @@ sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 
 # MyPy configuration
 [tool.mypy]
-python_version = "0.2.2a1"
+python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true

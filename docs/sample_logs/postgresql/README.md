@@ -1,6 +1,6 @@
 # PostgreSQL Sample Logs
 
-This directory contains sample PostgreSQL slow query log files that you can use to try Slow Query Doctor, validate parsing, and demo report generation.
+This directory contains sample PostgreSQL slow query log files that you can use to try IQToolkit Analyzer, validate parsing, and demo report generation.
 
 ## Included Sample Files
 

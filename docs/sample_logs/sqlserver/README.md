@@ -105,7 +105,7 @@ ALTER DATABASE [YourDatabase] SET QUERY_STORE (
 - Which performance anti-patterns are most critical in your environment?
 - Any specific Always On or clustering scenarios we should consider?
 
-📧 Contact: [Create an issue](https://github.com/iqtoolkit/slow-query-doctor/issues) with label `sqlserver-feedback`
+📧 Contact: [Create an issue](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues) with label `sqlserver-feedback`
 
 ---
 

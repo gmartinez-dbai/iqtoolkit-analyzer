@@ -62,7 +62,7 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 
 ## 🎯 Overview
 
-Slow Query Doctor automatically analyzes your **PostgreSQL** and **MongoDB** slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
+IQToolkit Analyzer automatically analyzes your **PostgreSQL** and **MongoDB** slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
 
 ### 🗄️ **Database & AI Support Status**
 
@@ -115,7 +115,7 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** and **MongoDB** slo
 ## 🚀 Quick Start
 
 > **⚡ Ready to analyze PostgreSQL or MongoDB slow queries right now?** Follow the installation below.  
-> **🔮 Planning for MySQL/SQL Server?** [Join the early feedback program](https://github.com/iqtoolkit/slow-query-doctor/discussions) to shape v0.4.0 development!
+> **🔮 Planning for MySQL/SQL Server?** [Join the early feedback program](https://github.com/iqtoolkit/iqtoolkit-analyzer/discussions) to shape v0.4.0 development!
 
 ### Installation
 
@@ -142,8 +142,8 @@ make setup
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/iqtoolkit/slow-query-doctor.git
-cd slow-query-doctor
+git clone https://github.com/iqtoolkit/iqtoolkit-analyzer.git
+cd iqtoolkit-analyzer
 ```
 
 2. **Create virtual environment:**
@@ -161,16 +161,21 @@ pip install -e .[dev,test]
 
 #### AI Provider Setup (Both Options)
 
-**Option A: Ollama (Recommended - Local, private, no API key needed) ⭐**
+**Option A: Ollama (Recommended - Local or remote, private, no API key needed) ⭐**
 ```bash
-# Quick setup (see docs/5-minute-ollama-setup.md for details)
+# Local setup (see docs/5-minute-ollama-setup.md for details)
 curl -LsSf https://ollama.com/install.sh | sh
 ollama serve
-ollama pull arctic-text2sql-r1:7b  # SQL-specialized model (recommended)
+ollama pull a-kore/Arctic-Text2SQL-R1-7B  # SQL-specialized model (recommended)
 
 # Copy example config and customize
 cp .iqtoolkit-analyzer.yml.example .iqtoolkit-analyzer.yml
 # Edit: set llm_provider: ollama
+
+# OR use remote Ollama server
+export OLLAMA_HOST=http://your-server-ip:11434
+# Or add to .iqtoolkit-analyzer.yml:
+#   ollama_host: http://your-server-ip:11434
 ```
 
 **Option B: OpenAI (Cloud, requires API key)**
@@ -179,7 +184,7 @@ export OPENAI_API_KEY="your-openai-api-key-here"
 # Config will use OpenAI by default if no .iqtoolkit-analyzer.yml exists
 ```
 
-> **💡 Tip**: Ollama runs completely locally—your queries never leave your machine. Perfect for sensitive production data. See [Ollama Local Setup](docs/ollama-local.md) for details.
+> **💡 Tip**: Ollama can run locally or on a remote server—your queries stay within your infrastructure. Perfect for sensitive production data. See [Ollama Setup Guide](docs/ollama-local.md) for local and remote configuration details.
 
 ### Basic Usage
 
@@ -252,8 +257,8 @@ The `docs/sample_logs/` directory contains database slow query log examples for 
 - **SQL Server**: Placeholder directory with Extended Events samples and configuration → [View samples](docs/sample_logs/sqlserver/)
 
 > 🎯 **Early Feedback Opportunities**: 
-> - **MySQL Users**: [Share your slow query log formats and challenges](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mysql-feedback&title=MySQL%20Requirements)
-> - **SQL Server DBAs**: [Tell us about your Extended Events setup and pain points](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=sqlserver-feedback&title=SQL%20Server%20Requirements)
+> - **MySQL Users**: [Share your slow query log formats and challenges](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues/new?labels=mysql-feedback&title=MySQL%20Requirements)
+> - **SQL Server DBAs**: [Tell us about your Extended Events setup and pain points](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues/new?labels=sqlserver-feedback&title=SQL%20Server%20Requirements)
 
 ### Available Sample Files
 
@@ -295,15 +300,17 @@ Sample log files use the `.txt` extension instead of `.log` to prevent them from
 ## 🏗️ Project Architecture
 
 ```
-slow-query-doctor/
+iqtoolkit-analyzer/
 ├── iqtoolkit_analyzer/       # Main package
 │   ├── __init__.py          # Package interface
 │   ├── parser.py            # Log file parsing
 │   ├── analyzer.py          # Query analysis & scoring
 │   ├── llm_client.py        # AI/OpenAI integration
 │   └── report_generator.py  # Markdown report generation
-├── sample_logs/             # Sample PostgreSQL log files
-│   └── postgresql-2025-10-28_192816.log.txt  # Real slow query examples
+├── docs/
+│   └── sample_logs/         # Sample database log files
+│       ├── postgresql/      # PostgreSQL examples
+│       └── mongodb/         # MongoDB examples
 ├── requirements.txt         # Python dependencies
 └── README.md               # This file
 ```

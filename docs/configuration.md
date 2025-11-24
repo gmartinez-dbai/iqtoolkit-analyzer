@@ -19,9 +19,22 @@ log_format: csv
 min_duration: 1000
 output: my_report.md
 top_n: 10
-llm_provider: openai  # or 'ollama'
+
+# AI Provider: OpenAI or Ollama
+llm_provider: ollama  # or 'openai'
+
+# OpenAI Configuration
 openai_model: gpt-4o-mini
-ollama_model: arctic-text2sql-r1:7b
+openai_api_key: sk-xxx  # optional, can use OPENAI_API_KEY env var
+
+# Ollama Configuration (local or remote)
+ollama_model: a-kore/Arctic-Text2SQL-R1-7B
+ollama_host: http://localhost:11434  # or remote: http://192.168.0.30:11434
+
+# LLM Settings
+llm_temperature: 0.3
+max_tokens: 300
+llm_timeout: 30
 ```
 
 
@@ -47,12 +60,12 @@ See the README and this file for all available options.
 
 ## Environment Variables
 
-| Variable           | Description                | Default           |
-|--------------------|---------------------------|-------------------|
-| OPENAI_API_KEY     | OpenAI API key (required) | None              |
-| OPENAI_MODEL       | GPT model to use          | gpt-4o-mini       |
-| OPENAI_BASE_URL    | Custom OpenAI endpoint    | Default API URL   |
-| OLLAMA_HOST        | Custom Ollama host URL    | http://localhost:11434 |
+| Variable           | Description                | Default           | Example |
+|--------------------|---------------------------|-------------------|----------|
+| OPENAI_API_KEY     | OpenAI API key (required for OpenAI) | None              | `sk-xxx...` |
+| OPENAI_MODEL       | GPT model to use          | gpt-4o-mini       | `gpt-4o` |
+| OPENAI_BASE_URL    | Custom OpenAI endpoint    | Default API URL   | Custom endpoint |
+| OLLAMA_HOST        | Ollama server URL (local or remote) | http://localhost:11434 | `http://192.168.0.30:11434` |
 
 ## Dependencies
 

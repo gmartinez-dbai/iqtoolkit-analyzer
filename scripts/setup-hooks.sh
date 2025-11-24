@@ -3,7 +3,7 @@
 # Setup script to install git hooks
 # Run this once: ./scripts/setup-hooks.sh
 
-echo "🔧 Setting up git hooks for slow-query-doctor..."
+echo "🔧 Setting up git hooks for iqtoolkit-analyzer..."
 
 # Check for .venv directory in repo root
 if [ ! -d ".venv" ]; then

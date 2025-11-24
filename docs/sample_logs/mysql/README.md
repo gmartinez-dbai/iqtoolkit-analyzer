@@ -63,7 +63,7 @@ log_slow_admin_statements = 1
 - Which MySQL versions should we prioritize?
 - Any specific performance patterns we should detect?
 
-📧 Contact: [Create an issue](https://github.com/iqtoolkit/slow-query-doctor/issues) with label `mysql-feedback`
+📧 Contact: [Create an issue](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues) with label `mysql-feedback`
 
 ---
 

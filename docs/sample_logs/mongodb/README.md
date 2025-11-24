@@ -83,7 +83,7 @@ We're actively developing MongoDB support! Help us by:
 2. **Optimization needs**: What MongoDB performance issues do you face most?
 3. **Log formats**: What log formats does your MongoDB setup use?
 
-**Contribute:** [File a MongoDB feedback issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mongodb-feedback&title=MongoDB%20Requirements)
+**Contribute:** [File a MongoDB feedback issue](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues/new?labels=mongodb-feedback&title=MongoDB%20Requirements)
 
 ---
 

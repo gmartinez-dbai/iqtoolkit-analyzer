@@ -1,7 +1,7 @@
 # [← Back to Index](index.md)
 # PostgreSQL: Setup & Example Usage
 
-This page provides a complete guide for setting up PostgreSQL slow query logging, generating example logs, and analyzing them with Slow Query Doctor.
+This page provides a complete guide for setting up PostgreSQL slow query logging, generating example logs, and analyzing them with IQToolkit Analyzer.
 
 ---
 

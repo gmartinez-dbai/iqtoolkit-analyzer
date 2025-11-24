@@ -1,0 +1,209 @@
+name: PR Automation
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  issues: write
+  contents: read
+
+jobs:
+  label-pr:
+    name: Auto-label PR
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+  pr-size:
+    name: Label PR Size
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Calculate PR size
+        id: size
+        run: |
+          FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | wc -l)
+          LINES_CHANGED=$(git diff --shortstat origin/${{ github.base_ref }}...HEAD | grep -oE '[0-9]+ insertion|[0-9]+ deletion' | grep -oE '[0-9]+' | paste -sd+ - | bc || echo 0)
+          
+          echo "files=$FILES_CHANGED" >> $GITHUB_OUTPUT
+          echo "lines=$LINES_CHANGED" >> $GITHUB_OUTPUT
+          
+          if [ $LINES_CHANGED -lt 50 ]; then
+            echo "label=size/XS" >> $GITHUB_OUTPUT
+          elif [ $LINES_CHANGED -lt 200 ]; then
+            echo "label=size/S" >> $GITHUB_OUTPUT
+          elif [ $LINES_CHANGED -lt 500 ]; then
+            echo "label=size/M" >> $GITHUB_OUTPUT
+          elif [ $LINES_CHANGED -lt 1000 ]; then
+            echo "label=size/L" >> $GITHUB_OUTPUT
+          else
+            echo "label=size/XL" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Add size label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const label = '${{ steps.size.outputs.label }}';
+            const labels = ['size/XS', 'size/S', 'size/M', 'size/L', 'size/XL'];
+            
+            // Remove existing size labels
+            const currentLabels = await github.rest.issues.listLabelsOnIssue({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            for (const currentLabel of currentLabels.data) {
+              if (labels.includes(currentLabel.name)) {
+                await github.rest.issues.removeLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  name: currentLabel.name
+                });
+              }
+            }
+            
+            // Add new size label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: [label]
+            });
+
+  check-conventional-commits:
+    name: Check Conventional Commits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+          subjectPattern: ^[A-Z].+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            starts with an uppercase character.
+
+  validate-branch-name:
+    name: Validate Branch Name
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.ref != 'main' && github.event.pull_request.head.ref != 'develop'
+    steps:
+      - name: Check branch name
+        run: |
+          BRANCH="${{ github.event.pull_request.head.ref }}"
+          VALID_PATTERNS="^(feature|bugfix|hotfix|docs|refactor|chore)/.+"
+          
+          if ! echo "$BRANCH" | grep -qE "$VALID_PATTERNS"; then
+            echo "❌ Branch name '$BRANCH' doesn't follow the naming convention"
+            echo "Valid patterns: feature/*, bugfix/*, hotfix/*, docs/*, refactor/*, chore/*"
+            exit 1
+          fi
+          echo "✅ Branch name is valid"
+
+  check-pr-description:
+    name: Check PR Description
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate description length
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = context.payload.pull_request.body || '';
+            const minLength = 50;
+            
+            if (body.length < minLength) {
+              core.setFailed(`PR description is too short (${body.length} chars). Please add at least ${minLength} characters describing your changes.`);
+            } else {
+              core.info(`✅ PR description length is sufficient (${body.length} chars)`);
+            }
+
+  auto-assign:
+    name: Auto-assign PR
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Auto-assign PR to author
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const assignees = context.payload.pull_request.assignees;
+            if (assignees.length === 0) {
+              await github.rest.issues.addAssignees({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                assignees: [context.payload.pull_request.user.login]
+              });
+            }
+
+  pr-summary:
+    name: PR Summary Comment
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened' && github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Generate PR summary
+        id: summary
+        run: |
+          FILES_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | wc -l)
+          INSERTIONS=$(git diff --shortstat origin/${{ github.base_ref }}...HEAD | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+' || echo 0)
+          DELETIONS=$(git diff --shortstat origin/${{ github.base_ref }}...HEAD | grep -oE '[0-9]+ deletion' | grep -oE '[0-9]+' || echo 0)
+          
+          SUMMARY="## 📊 PR Summary\n\n"
+          SUMMARY="${SUMMARY}**Files changed:** $FILES_CHANGED\n"
+          SUMMARY="${SUMMARY}**Lines added:** +$INSERTIONS\n"
+          SUMMARY="${SUMMARY}**Lines removed:** -$DELETIONS\n\n"
+          SUMMARY="${SUMMARY}### Checklist\n"
+          SUMMARY="${SUMMARY}- [ ] Tests added/updated\n"
+          SUMMARY="${SUMMARY}- [ ] Documentation updated\n"
+          SUMMARY="${SUMMARY}- [ ] CHANGELOG.md updated\n"
+          SUMMARY="${SUMMARY}- [ ] Version bumped (if needed)\n"
+          
+          echo "summary<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$SUMMARY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Comment PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `${{ steps.summary.outputs.summary }}`
+            });

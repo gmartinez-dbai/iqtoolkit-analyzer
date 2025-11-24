@@ -1,0 +1,52 @@
+# Auto-labeler configuration for GitHub Actions
+# https://github.com/actions/labeler
+
+# Documentation changes
+'documentation':
+  - changed-files:
+    - any-glob-to-any-file: ['docs/**/*', '*.md', 'mkdocs.yml']
+
+# Python code changes
+'python':
+  - changed-files:
+    - any-glob-to-any-file: ['iqtoolkit_analyzer/**/*.py', 'tests/**/*.py']
+
+# Tests
+'tests':
+  - changed-files:
+    - any-glob-to-any-file: ['tests/**/*', 'test_*.py']
+
+# CI/CD
+'ci/cd':
+  - changed-files:
+    - any-glob-to-any-file: ['.github/**/*', 'Makefile', 'Dockerfile']
+
+# Dependencies
+'dependencies':
+  - changed-files:
+    - any-glob-to-any-file: ['requirements.txt', 'pyproject.toml', 'setup.cfg', 'package.json']
+
+# Configuration
+'configuration':
+  - changed-files:
+    - any-glob-to-any-file: ['*.yml', '*.yaml', '*.toml', '*.cfg', '*.ini']
+
+# PostgreSQL
+'postgresql':
+  - changed-files:
+    - any-glob-to-any-file: ['**/postgres*', '**/pg_*', 'docs/sample_logs/postgresql/**/*']
+
+# MongoDB
+'mongodb':
+  - changed-files:
+    - any-glob-to-any-file: ['**/mongo*', 'docs/sample_logs/mongodb/**/*']
+
+# Database (general)
+'database':
+  - changed-files:
+    - any-glob-to-any-file: ['docs/sample_logs/**/*']
+
+# Breaking change (based on files that commonly indicate breaking changes)
+'breaking-change':
+  - changed-files:
+    - any-glob-to-any-file: ['iqtoolkit_analyzer/__init__.py', 'iqtoolkit_analyzer/main.py', 'pyproject.toml']

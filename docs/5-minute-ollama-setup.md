@@ -1,4 +1,4 @@
-# 🚀 5-Minute Ollama Setup for Slow Query Doctor
+# 🚀 5-Minute Ollama Setup for IQToolkit Analyzer
 
 Get Ollama running locally in 5 minutes for private AI analysis of your database logs.
 
@@ -18,7 +18,7 @@ curl -LsSf https://ollama.com/install.sh | sh
 ollama serve
 
 # In a new terminal, pull a model (specialized for SQL)
-ollama pull arctic-text2sql-r1:7b
+ollama pull a-kore/Arctic-Text2SQL-R1-7B
 ```
 
 > **Why Arctic-Text2SQL-R1 7B?** This model is specifically fine-tuned for SQL tasks, making it ideal for database query analysis and optimization recommendations.
@@ -29,7 +29,7 @@ Create `.iqtoolkit-analyzer.yml` in your project:
 
 ```yaml
 llm_provider: ollama
-ollama_model: arctic-text2sql-r1:7b
+ollama_model: a-kore/Arctic-Text2SQL-R1-7B
 top_n: 5
 output: reports/report.md
 ```
@@ -56,7 +56,7 @@ uv run python -m iqtoolkit_analyzer your_postgresql.log
 **Model not found?**  
 ```bash
 ollama list  # Check installed models
-ollama pull arctic-text2sql-r1:7b  # Pull if missing
+ollama pull a-kore/Arctic-Text2SQL-R1-7B  # Pull if missing
 ```
 
 **Connection refused?**  

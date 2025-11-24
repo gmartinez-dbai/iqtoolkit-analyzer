@@ -10,13 +10,13 @@ import os
 import sys
 from pathlib import Path
 
+# Add project root to path first, before importing iqtoolkit_analyzer
+sys.path.insert(0, str(Path(__file__).parent))
+
 # Set the remote Ollama host
 os.environ["OLLAMA_HOST"] = "http://192.168.0.30:11434"
 
-# Add project root to path
-sys.path.insert(0, str(Path(__file__).parent))
-
-from iqtoolkit_analyzer.llm_client import LLMClient, LLMConfig
+from iqtoolkit_analyzer.llm_client import LLMClient, LLMConfig  # noqa: E402
 
 
 def test_remote_ollama():
@@ -31,7 +31,7 @@ def test_remote_ollama():
         import ollama
 
         models = ollama.list()
-        print(f"✅ Connected successfully!")
+        print("✅ Connected successfully!")
         print(f"   Available models: {len(models.models)}")
         for model in models.models:
             print(f"   - {model.model} ({model.details.parameter_size})")
@@ -56,7 +56,7 @@ def test_remote_ollama():
             if hasattr(response, "message")
             else response.get("message", {}).get("content", "")
         )
-        print(f"✅ Chat test successful!")
+        print("✅ Chat test successful!")
         print(f"   Response: {content}")
     except Exception as e:
         print(f"❌ Chat test failed: {e}")
@@ -90,13 +90,13 @@ def test_remote_ollama():
         )
 
         if recommendation and "error" not in recommendation.lower():
-            print(f"✅ LLMClient integration working!")
-            print(f"\n   Recommendation:")
+            print("✅ LLMClient integration working!")
+            print("\n   Recommendation:")
             print(f"   {'-' * 56}")
             for line in recommendation.split("\n")[:5]:  # First 5 lines
                 print(f"   {line}")
             if len(recommendation.split("\n")) > 5:
-                print(f"   ... (truncated)")
+                print("   ... (truncated)")
             print(f"   {'-' * 56}")
         else:
             print(f"❌ Integration failed: {recommendation}")

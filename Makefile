@@ -1,6 +1,11 @@
 # Makefile for iqtoolkit-analyzer
 
-.PHONY: help setup sync-version check-version install test lint format clean hooks validate
+.PHONY: help setup sync-version check-version install test lint format clean hooks validate dev-check test-ollama update-requirements
+
+# Python interpreter from virtual environment
+PYTHON := .venv/bin/python
+PIP := .venv/bin/pip
+UV := $(shell command -v uv 2> /dev/null)
 
 # Default target
 help:
@@ -154,10 +159,10 @@ format:
 	@echo "🎨 Formatting code..."
 	@if command -v uv >/dev/null 2>&1; then \
 		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run black iqtoolkit_analyzer tests scripts; \
+		uv run black iqtoolkit_analyzer tests scripts *.py; \
 	else \
 		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m black iqtoolkit_analyzer tests scripts; \
+		.venv/bin/python -m black iqtoolkit_analyzer tests scripts *.py; \
 	fi
 	@echo "✅ Code formatted!"
 
@@ -175,11 +180,11 @@ lint:
 	@echo "🔍 Running linting..."
 	@if command -v uv >/dev/null 2>&1; then \
 		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run flake8 iqtoolkit_analyzer tests scripts --max-line-length=88 --extend-ignore=E203,W503 --exclude=scripts/propagate_version.py; \
+		uv run flake8 . --max-line-length=88 --extend-ignore=E203,W503 --exclude=.venv,build,dist,*.egg-info,scripts/propagate_version.py; \
 		uv run mypy iqtoolkit_analyzer --ignore-missing-imports; \
 	else \
 		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m flake8 iqtoolkit_analyzer tests scripts --max-line-length=88 --extend-ignore=E203,W503 --exclude=scripts/propagate_version.py; \
+		.venv/bin/python -m flake8 . --max-line-length=88 --extend-ignore=E203,W503 --exclude=.venv,build,dist,*.egg-info,scripts/propagate_version.py; \
 		.venv/bin/python -m mypy iqtoolkit_analyzer --ignore-missing-imports; \
 	fi
 	@echo "✅ Linting passed!"

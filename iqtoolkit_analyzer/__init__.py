@@ -14,7 +14,7 @@ AI Providers:
 Self-hosted, privacy-first, 100% open source.
 """
 
-__version__ = "0.2.2a1"
+__version__ = "0.2.2"
 
 from .parser import parse_postgres_log
 from .analyzer import run_slow_query_analysis, normalize_query

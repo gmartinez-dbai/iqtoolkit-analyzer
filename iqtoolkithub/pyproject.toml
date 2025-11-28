@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "iqtoolkithub"
+version = "0.1.0"
+description = "Orchestration Gateway for IQToolkit"
+authors = ["Giovanni Martinez <gio@iqtoolkit.ai>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.100.0"
+uvicorn = "^0.20.0"
+httpx = "^0.24.0"
+tenacity = "^8.2.0"
+sqlalchemy = "^2.0.0"
+alembic = "^1.11.0"
+python-dotenv = "^1.0.0"
+psycopg2-binary = "^2.9.0"
+iqtoolkit-contracts = {path = "../iqtoolkit-contracts", develop = true}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

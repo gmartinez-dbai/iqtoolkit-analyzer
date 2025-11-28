@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "iqtoolkit-contracts"
+version = "0.1.0"
+description = "Shared Pydantic models for IQToolkit services"
+authors = ["Giovanni Martinez <gio@iqtoolkit.ai>"]
+readme = "README.md"
+packages = [{include = "iqtoolkit_contracts", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

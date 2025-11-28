@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "iqtoolkit-iqai"
+version = "0.1.0"
+description = "AI Copilot service for IQToolkit"
+authors = ["Giovanni Martinez <gio@iqtoolkit.ai>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.100.0"
+uvicorn = "^0.20.0"
+pydantic-ai = "^0.0.1"
+python-dotenv = "^1.0.0"
+redis = "^5.0.0"
+iqtoolkit-contracts = {path = "../iqtoolkit-contracts", develop = true}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

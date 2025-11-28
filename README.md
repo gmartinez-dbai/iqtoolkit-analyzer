@@ -330,22 +330,16 @@ Sample log files use the `.txt` extension instead of `.log` to prevent them from
    - Complex mathematical calculations (`SQRT`, `SIN`, `COS`, `LOG`)
    - Heavy sorting and partitioning operations
 
-## 🏗️ Project Architecture
+## 🏗️ Project Architecture (Monorepo)
 
 ```
 iqtoolkit-analyzer/
-├── iqtoolkit_analyzer/       # Main package
-│   ├── __init__.py          # Package interface
-│   ├── parser.py            # Log file parsing
-│   ├── analyzer.py          # Query analysis & scoring
-│   ├── llm_client.py        # AI/OpenAI integration
-│   └── report_generator.py  # Markdown report generation
-├── docs/
-│   └── sample_logs/         # Sample database log files
-│       ├── postgresql/      # PostgreSQL examples
-│       └── mongodb/         # MongoDB examples
-├── requirements.txt         # Python dependencies
-└── README.md               # This file
+├── iqtoolkit_analyzer/      # Current CLI package (to be service-ized)
+├── iqtoolkit-contracts/     # Shared Pydantic models (Poetry package)
+├── iqtoolkit-iqai/          # AI Copilot service (Poetry package)
+├── iqtoolkithub/            # Orchestration gateway (Poetry package)
+├── iqtoolkit-deployment/    # Helm charts and deployment assets
+└── docs/                    # Documentation and samples
 ```
 
 ### Data Flow
@@ -355,7 +349,7 @@ iqtoolkit-analyzer/
 3. **AI Analysis** → Generate optimization recommendations using AI models
 4. **Report** → Create comprehensive Markdown analysis report
 
-> **Multi-Database Roadmap**: MySQL and SQL Server support planned for v0.4.0 (Q3 2026)
+> See [ROADMAP.md](ROADMAP.md) for milestones (v0.2.2 current, v0.2.3 next) and central-plan phases.
 
 
 ## ⚙️ Configuration

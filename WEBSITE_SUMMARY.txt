@@ -1,0 +1,48 @@
+IQToolkit Analyzer — Product Update Summary (November 2025)
+===========================================================
+
+Current State (v0.2.2 — Stable)
+- Platforms: PostgreSQL and MongoDB slow query analysis
+- AI Providers: Ollama (local/remote) and OpenAI — configurable
+- Reports: Markdown, JSON, and HTML (MongoDB dashboards)
+- Privacy-first defaults with local Ollama support
+- CLI ready; docs refreshed and aligned to current features
+
+Architecture Shift: Modular Monorepo
+- We moved from a single-package repo to a modular monorepo to enable faster iteration and clearer boundaries.
+- Modules (folders) now included:
+  - iqtoolkit_analyzer: Current CLI package (to be service-ized)
+  - iqtoolkit-contracts: Shared Pydantic models (Poetry package)
+  - iqtoolkit-iqai: AI Copilot service using pydantic-ai (Poetry package)
+  - iqtoolkithub: Orchestration gateway that composes Analyzer + IQAI (Poetry package)
+  - iqtoolkit-deployment: Helm/K8s deployment assets
+- Tooling: Poetry across packages, path dependencies for fast local development
+- Why this change: Atomic changes across modules, simpler contracts, and a clean transition to services later without fragmentation into multiple repos.
+
+What’s Next (Roadmap Highlights)
+- v0.2.3 (Q1 2026): PostgreSQL EXPLAIN Analyzer (RFC-002)
+  - Parse EXPLAIN JSON/YAML
+  - Extract execution metrics, detect anti-patterns, suggest indexes
+  - LLM insights for complex plans
+  - MongoDB enhancements: aggregation pipeline optimization, indexing strategy
+- v0.3.0 (Q2 2026): Platform modularity & orchestration
+  - Service-ize analyzer (optional API)
+  - Stand up IQAI service (pydantic-ai)
+  - Hub gateway to orchestrate Analyzer + IQAI
+  - Helm charts + CI/CD pipelines
+- Beyond v0.3.x: Database expansion
+  - MySQL and SQL Server analysis & EXPLAIN/plan support
+
+Why It Matters
+- Enterprise-readiness: Strong privacy posture with Ollama and clear contracts
+- Speed: Path-based development across modules keeps velocity high
+- Safety: Centralized contracts reduce integration bugs and drift
+
+Links
+- Roadmap: ROADMAP.md
+- Monorepo Guide: docs/monorepo.md
+- Release Process & Publishing: docs/release-process.md
+- Getting Started: README.md
+
+Contact
+- Product: gio@iqtoolkit.ai

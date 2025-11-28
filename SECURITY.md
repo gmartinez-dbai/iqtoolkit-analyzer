@@ -55,7 +55,7 @@ We take the security of IQToolkit Analyzer seriously. If you believe you have fo
 3. **Log File Security**
    - Database logs may contain sensitive query data
    - Sanitize logs before sharing or uploading
-   - Use local Ollama models (v0.2.0+) for maximum privacy with sensitive data
+   - Use local Ollama models (v0.2.2+) for maximum privacy with sensitive data
 
 4. **Dependencies**
    - Keep IQToolkit Analyzer updated to the latest version
@@ -88,12 +88,12 @@ We take the security of IQToolkit Analyzer seriously. If you believe you have fo
 
 ### AI Provider Data Privacy
 
-**OpenAI (v0.1.x - Current Default)**
+**OpenAI (v0.1.x+ - Supported)**
 - Query data is sent to OpenAI's servers for analysis
 - Covered by OpenAI's data usage policies
-- **Recommendation**: Sanitize sensitive data before analysis or wait for v0.2.0
+- **Recommendation**: Sanitize sensitive data before analysis or prefer local Ollama (v0.2.2+)
 
-**Ollama (v0.2.0+ - Upcoming)**
+**Ollama (v0.2.2+ - Available)**
 - Runs completely locally on your machine
 - No data leaves your environment
 - **Recommendation**: Use for production data and sensitive queries

@@ -44,7 +44,7 @@ We follow a **Git Flow** branching model with the following branches:
    ```bash
    git clone https://github.com/YOUR_USERNAME/iqtoolkit-analyzer.git
    cd iqtoolkit-analyzer
-   make setup  # Automatically uses uv if available, falls back to pip
+   make setup  # Creates .venv and installs dependencies with pip
    ```
 2. **Create a Feature Branch:**
    ```bash
@@ -121,7 +121,7 @@ git push origin feature/your-feature-name
 - Add or update tests for new features and bug fixes
 - Run code quality checks before submitting:
   ```bash
-  make format  # Format with black (uv/pip compatible)
+   make format  # Format with black
   make lint    # Lint with flake8 + mypy
   make test    # Run all tests
   ```

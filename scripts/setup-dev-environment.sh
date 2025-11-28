@@ -7,43 +7,33 @@ set -e
 
 echo "🚀 Setting up iqtoolkit-analyzer development environment..."
 
-# Ensure uv is installed
-if ! command -v uv >/dev/null 2>&1; then
-    echo "❌ 'uv' is not installed. Please install uv first:"
-    echo "   https://docs.astral.sh/uv/getting-started/"
-    echo "   macOS/Linux: curl -LsSf https://astral.sh/uv/install.sh | sh"
-    echo "   Homebrew: brew install uv"
-    echo "   Windows: winget install Astral-UV.UV"
-    exit 1
-fi
-
 # Check if .venv directory exists, create if not
 if [ ! -d ".venv" ]; then
-    echo "📦 Creating '.venv' virtual environment with uv in repository root..."
-    uv venv --python 3.11
+    echo "📦 Creating '.venv' virtual environment in repository root..."
+    python -m venv .venv
     echo "✅ Virtual environment created at ./.venv"
     echo ""
 else
     echo "✅ Virtual environment '.venv' already exists"
 fi
 
-echo "🧰 Installing dependencies with uv..."
-uv pip install -r requirements.txt
-echo "📥 Installing iqtoolkit-analyzer with dev dependencies (uv)..."
-uv pip install -e .[dev]
+echo "🧰 Installing dependencies with pip..."
+.venv/bin/pip install -r requirements.txt
+echo "📥 Installing iqtoolkit-analyzer with dev dependencies..."
+.venv/bin/pip install -e .[dev]
 
 # Verify ruamel.yaml is installed
 echo "🔍 Verifying ruamel.yaml installation..."
-if uv run python -c "import ruamel.yaml; print('✅ ruamel.yaml installed successfully')" 2>/dev/null; then
+if .venv/bin/python -c "import ruamel.yaml; print('✅ ruamel.yaml installed successfully')" 2>/dev/null; then
     echo "✅ ruamel.yaml is available"
 else
     echo "❌ ruamel.yaml not found, installing explicitly..."
-    uv pip install "ruamel.yaml>=0.17.21"
+    .venv/bin/pip install "ruamel.yaml>=0.17.21"
 fi
 
 # Test the version script
 echo "🧪 Testing version management script..."
-if uv run python scripts/propagate_version.py --verify; then
+if .venv/bin/python scripts/propagate_version.py --verify; then
     echo "✅ Version management script works correctly"
 else
     echo "❌ Version script test failed"
@@ -65,7 +55,7 @@ echo "   2. Install git hooks: bash scripts/setup-hooks.sh"
 echo "   3. Run tests: make test"
 echo "   4. Check version consistency: make check-version"
 echo ""
-echo "💡 Available commands (all will use ./.venv automatically):"
+echo "💡 Available commands (all use ./.venv):"
 echo "   make help           # See all available commands"
 echo "   make setup          # Full setup including git hooks"
 echo "   make check-version  # Verify version consistency"

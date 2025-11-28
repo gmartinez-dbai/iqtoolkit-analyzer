@@ -103,7 +103,9 @@ def main():
         return 1
 
     logger.info("🎉 All tests passed! Ollama is ready for IQToolkit Analyzer.")
-    logger.info("You can now run: poetry run python -m iqtoolkit_analyzer your_log_file.log")
+    logger.info(
+        "You can now run: poetry run python -m iqtoolkit_analyzer your_log_file.log"
+    )
     logger.info("Make sure your .iqtoolkit-analyzer.yml has: llm_provider: ollama")
 
     return 0

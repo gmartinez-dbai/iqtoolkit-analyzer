@@ -5,14 +5,13 @@
 # Python interpreter from virtual environment
 PYTHON := .venv/bin/python
 PIP := .venv/bin/pip
-UV := $(shell command -v uv 2> /dev/null)
 
 # Default target
 help:
 	@echo "🚀 Iqtoolkit Analyzer - Development Commands"
 	@echo ""
 	@echo "⚠️  IMPORTANT: All commands require '.venv' directory in repo root!"
-	@echo "   First time: make setup  (uses uv if available, fallback to pip)"
+	@echo "   First time: make setup  (creates .venv and installs deps)"
 	@echo ""
 	@echo "Setup & Installation:"
 	@echo "  make validate     Check if environment is properly configured"
@@ -39,24 +38,12 @@ help:
 # Setup development environment
 setup: hooks install
 	@if [ ! -d ".venv" ]; then \
-		if command -v uv >/dev/null 2>&1; then \
-			echo "📦 Creating '.venv' with uv..."; \
-			uv venv --python 3.11; \
-		else \
-			echo "📦 Creating '.venv' with standard venv..."; \
-			python -m venv .venv; \
-		fi \
+		echo "📦 Creating '.venv' with standard venv..."; \
+		python -m venv .venv; \
 	fi
 	@echo "📦 Installing development dependencies..."
-	@if command -v uv >/dev/null 2>&1; then \
-		echo "🚀 Using uv for fast installation"; \
-		uv pip install -r requirements.txt; \
-		uv pip install -e .[dev]; \
-	else \
-		echo "🐍 Using pip for installation"; \
-		.venv/bin/pip install -r requirements.txt; \
-		.venv/bin/pip install -e .[dev]; \
-	fi
+	@.venv/bin/pip install -r requirements.txt; \
+	.venv/bin/pip install -e .[dev]
 	@echo "✅ Development environment ready!"
 
 # Install git hooks
@@ -67,157 +54,80 @@ hooks:
 # Install package in development mode
 install:
 	@if [ ! -d ".venv" ]; then \
-		if command -v uv >/dev/null 2>&1; then \
-			echo "📦 Creating '.venv' with uv..."; \
-			uv venv --python 3.11; \
-		else \
-			echo "📦 Creating '.venv' with standard venv..."; \
-			python -m venv .venv; \
-		fi \
+		echo "📦 Creating '.venv' with standard venv..."; \
+		python -m venv .venv; \
 	fi
-	@if command -v uv >/dev/null 2>&1; then \
-		echo "🚀 Installing with uv..."; \
-		uv pip install -r requirements.txt; \
-		uv pip install -e .; \
-	else \
-		echo "🐍 Installing with pip..."; \
-		.venv/bin/pip install -r requirements.txt; \
-		.venv/bin/pip install -e .; \
-	fi
+	@echo "🐍 Installing with pip..."; \
+	.venv/bin/pip install -r requirements.txt; \
+	.venv/bin/pip install -e .
 
 # Version management
 sync-version:
 	@if [ ! -d ".venv" ]; then \
-		if command -v uv >/dev/null 2>&1; then \
-			echo "📦 Creating '.venv' with uv..."; \
-			uv venv --python 3.11; \
-		else \
-			echo "📦 Creating '.venv' with standard venv..."; \
-			python -m venv .venv; \
-		fi \
+		echo "📦 Creating '.venv' with standard venv..."; \
+		python -m venv .venv; \
 	fi
 	@echo "🔄 Synchronizing versions..."
-	@if command -v uv >/dev/null 2>&1; then \
-		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run python scripts/propagate_version.py; \
-	else \
-		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python scripts/propagate_version.py; \
-	fi
+	@.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
+	.venv/bin/python scripts/propagate_version.py
 
 check-version:
 	@if [ ! -d ".venv" ]; then \
-		if command -v uv >/dev/null 2>&1; then \
-			echo "📦 Creating '.venv' with uv..."; \
-			uv venv --python 3.11; \
-		else \
-			echo "📦 Creating '.venv' with standard venv..."; \
-			python -m venv .venv; \
-		fi \
+		echo "📦 Creating '.venv' with standard venv..."; \
+		python -m venv .venv; \
 	fi
 	@echo "🔍 Checking version consistency..."
-	@if command -v uv >/dev/null 2>&1; then \
-		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run python scripts/propagate_version.py --verify; \
-	else \
-		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python scripts/propagate_version.py --verify; \
-	fi
+	@.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
+	.venv/bin/python scripts/propagate_version.py --verify
 
 # Dependency management
 update-requirements:
 	@if [ ! -d ".venv" ]; then \
-		if command -v uv >/dev/null 2>&1; then \
-			echo "📦 Creating '.venv' with uv..."; \
-			uv venv --python 3.11; \
-		else \
-			echo "📦 Creating '.venv' with standard venv..."; \
-			python -m venv .venv; \
-		fi \
+		echo "📦 Creating '.venv' with standard venv..."; \
+		python -m venv .venv; \
 	fi
-	@if command -v uv >/dev/null 2>&1; then \
-		echo "📦 Updating requirements.txt from pyproject.toml using uv..."; \
-		uv lock; \
-		uv export --frozen --output-file requirements.txt; \
-	else \
-		echo "📦 Updating requirements.txt using custom script..."; \
-		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python scripts/update_requirements.py; \
-	fi
+	@echo "📦 Updating requirements.txt using custom script..."; \
+	.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
+	.venv/bin/python scripts/update_requirements.py
 
 # Code formatting
 format:
 	@if [ ! -d ".venv" ]; then \
-		if command -v uv >/dev/null 2>&1; then \
-			echo "📦 Creating '.venv' with uv..."; \
-			uv venv --python 3.11; \
-		else \
-			echo "📦 Creating '.venv' with standard venv..."; \
-			python -m venv .venv; \
-		fi \
+		echo "📦 Creating '.venv' with standard venv..."; \
+		python -m venv .venv; \
 	fi
 	@echo "🎨 Formatting code..."
-	@if command -v uv >/dev/null 2>&1; then \
-		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run black iqtoolkit_analyzer tests scripts *.py; \
-	else \
-		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m black iqtoolkit_analyzer tests scripts *.py; \
-	fi
+	@.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
+	.venv/bin/python -m black iqtoolkit_analyzer tests scripts *.py
 	@echo "✅ Code formatted!"
 
 # Linting
 lint:
 	@if [ ! -d ".venv" ]; then \
-		if command -v uv >/dev/null 2>&1; then \
-			echo "📦 Creating '.venv' with uv..."; \
-			uv venv --python 3.11; \
-		else \
-			echo "📦 Creating '.venv' with standard venv..."; \
-			python -m venv .venv; \
-		fi \
+		echo "📦 Creating '.venv' with standard venv..."; \
+		python -m venv .venv; \
 	fi
 	@echo "🔍 Running linting..."
-	@if command -v uv >/dev/null 2>&1; then \
-		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run flake8 . --max-line-length=88 --extend-ignore=E203,W503 --exclude=.venv,build,dist,*.egg-info,scripts/propagate_version.py; \
-		uv run mypy iqtoolkit_analyzer --ignore-missing-imports; \
-	else \
-		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m flake8 . --max-line-length=88 --extend-ignore=E203,W503 --exclude=.venv,build,dist,*.egg-info,scripts/propagate_version.py; \
-		.venv/bin/python -m mypy iqtoolkit_analyzer --ignore-missing-imports; \
-	fi
+	@.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
+	.venv/bin/python -m flake8 . --max-line-length=88 --extend-ignore=E203,W503 --exclude=.venv,build,dist,*.egg-info,scripts/propagate_version.py; \
+	.venv/bin/python -m mypy iqtoolkit_analyzer --ignore-missing-imports
 	@echo "✅ Linting passed!"
 
 # Run tests
 test:
 	@if [ ! -d ".venv" ]; then \
-		if command -v uv >/dev/null 2>&1; then \
-			echo "📦 Creating '.venv' with uv..."; \
-			uv venv --python 3.11; \
-		else \
-			echo "📦 Creating '.venv' with standard venv..."; \
-			python -m venv .venv; \
-		fi \
+		echo "📦 Creating '.venv' with standard venv..."; \
+		python -m venv .venv; \
 	fi
 	@echo "🧪 Running tests..."
-	@if command -v uv >/dev/null 2>&1; then \
-		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run pytest tests/ --cov=iqtoolkit_analyzer --cov-report=term-missing --cov-report=html; \
-	else \
-		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m pytest tests/ --cov=iqtoolkit_analyzer --cov-report=term-missing --cov-report=html; \
-	fi
+	@.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
+	.venv/bin/python -m pytest tests/ --cov=iqtoolkit_analyzer --cov-report=term-missing --cov-report=html
 	@echo "✅ Tests completed!"
 
 # Test Ollama setup
 test-ollama:
 	@echo "🤖 Testing Ollama setup..."
-	@if command -v uv >/dev/null 2>&1; then \
-		uv run python scripts/test_ollama.py; \
-	else \
-		.venv/bin/python scripts/test_ollama.py; \
-	fi
+	@.venv/bin/python scripts/test_ollama.py
 
 # Clean build artifacts
 clean:

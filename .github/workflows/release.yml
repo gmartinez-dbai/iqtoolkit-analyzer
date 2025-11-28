@@ -51,14 +51,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       
-      - name: Install uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      
       - name: Install dependencies
         run: |
-          uv venv
-          uv pip install -r requirements.txt
-          uv pip install -e .[dev,test]
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          pip install -e .[dev,test]
       
       - name: Run linting
         run: |

@@ -11,7 +11,7 @@ echo ""
 # Check 1: Verify .venv directory exists
 if [ ! -d ".venv" ]; then
     echo "❌ FAIL: Virtual environment '.venv' directory not found"
-    echo "💡 Run: uv venv --python 3.11  (or: python -m venv .venv)"
+    echo "💡 Run: python -m venv .venv"
     exit 1
 else
     echo "✅ PASS: Virtual environment directory exists"
@@ -20,7 +20,7 @@ fi
 # Check 2: Verify .venv has Python
 if [ ! -f ".venv/bin/python" ]; then
     echo "❌ FAIL: Python executable not found in .venv"
-    echo "💡 Recreate .venv: rm -rf .venv && uv venv --python 3.11  (or: python -m venv .venv)"
+    echo "💡 Recreate .venv: rm -rf .venv && python -m venv .venv"
     exit 1
 else
     echo "✅ PASS: Python executable found in .venv"
@@ -40,74 +40,37 @@ fi
 
 # Check 4: Verify requirements can be installed
 echo "📦 Installing/checking requirements..."
-if command -v uv >/dev/null 2>&1; then
-    echo "🔧 Using 'uv' to install requirements"
-    uv pip install -r requirements.txt > /dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        echo "❌ FAIL: Could not install requirements with 'uv'"
-        exit 1
-    else
-        echo "✅ PASS: Requirements installed successfully (uv)"
-    fi
+.venv/bin/pip install -r requirements.txt > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "❌ FAIL: Could not install requirements with pip"
+    exit 1
 else
-    echo "🔧 'uv' not found — using .venv/bin/pip to install requirements"
-    .venv/bin/pip install -r requirements.txt > /dev/null 2>&1
-    if [ $? -ne 0 ]; then
-        echo "❌ FAIL: Could not install requirements with pip"
-        exit 1
-    else
-        echo "✅ PASS: Requirements installed successfully (pip)"
-    fi
+    echo "✅ PASS: Requirements installed successfully (pip)"
 fi
 
 # Check 5: Verify ruamel.yaml is available
 echo "🔍 Checking ruamel.yaml..."
-if command -v uv >/dev/null 2>&1; then
-    if uv run python -c "import ruamel.yaml" 2>/dev/null; then
-        RUAMEL_VERSION=$(uv run python -c "import ruamel.yaml; print(ruamel.yaml.version_info)")
-        echo "✅ PASS: ruamel.yaml is available (version: $RUAMEL_VERSION)"
-    else
-        echo "❌ FAIL: ruamel.yaml not available (uv)"
-        echo "💡 Installing ruamel.yaml..."
-        uv pip install "ruamel.yaml>=0.17.21"
-        if uv run python -c "import ruamel.yaml" 2>/dev/null; then
-            echo "✅ FIXED: ruamel.yaml installed successfully"
-        else
-            echo "❌ FAIL: Could not install ruamel.yaml (uv)"
-            exit 1
-        fi
-    fi
+if .venv/bin/python -c "import ruamel.yaml" 2>/dev/null; then
+    RUAMEL_VERSION=$(.venv/bin/python -c "import ruamel.yaml; print(ruamel.yaml.version_info)")
+    echo "✅ PASS: ruamel.yaml is available (version: $RUAMEL_VERSION)"
 else
+    echo "❌ FAIL: ruamel.yaml not available"
+    echo "💡 Installing ruamel.yaml..."
+    .venv/bin/pip install "ruamel.yaml>=0.17.21"
     if .venv/bin/python -c "import ruamel.yaml" 2>/dev/null; then
-        RUAMEL_VERSION=$(.venv/bin/python -c "import ruamel.yaml; print(ruamel.yaml.version_info)")
-        echo "✅ PASS: ruamel.yaml is available (version: $RUAMEL_VERSION)"
+        echo "✅ FIXED: ruamel.yaml installed successfully"
     else
-        echo "❌ FAIL: ruamel.yaml not available (pip)"
-        echo "💡 Installing ruamel.yaml..."
-        .venv/bin/pip install "ruamel.yaml>=0.17.21"
-        if .venv/bin/python -c "import ruamel.yaml" 2>/dev/null; then
-            echo "✅ FIXED: ruamel.yaml installed successfully"
-        else
-            echo "❌ FAIL: Could not install ruamel.yaml (pip)"
-            exit 1
-        fi
+        echo "❌ FAIL: Could not install ruamel.yaml"
+        exit 1
     fi
 fi
 
 # Check 6: Test version management script
 echo "🧪 Testing version management script..."
-if command -v uv >/dev/null 2>&1; then
-    if uv run python scripts/propagate_version.py --verify 2>/dev/null; then
-        echo "✅ PASS: Version management script works (uv)"
-    else
-        echo "⚠️  WARNING: Version management script test failed (may need version sync) (uv)"
-    fi
+if .venv/bin/python scripts/propagate_version.py --verify 2>/dev/null; then
+    echo "✅ PASS: Version management script works"
 else
-    if .venv/bin/python scripts/propagate_version.py --verify 2>/dev/null; then
-        echo "✅ PASS: Version management script works (pip)"
-    else
-        echo "⚠️  WARNING: Version management script test failed (may need version sync) (pip)"
-    fi
+    echo "⚠️  WARNING: Version management script test failed (may need version sync)"
 fi
 
 # Check 7: Verify git hooks can be installed

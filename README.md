@@ -1,18 +1,17 @@
-# 🧠 Iqtoolkit Analyzer
+# 🧠 IQToolkit Analyzer
 
 An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
 
-## 🎯 **Current Support: PostgreSQL + MongoDB Ready**
-**✅ Production Ready**: PostgreSQL slow query analysis with comprehensive AI-powered recommendations  
+## 🎯 Current Support
+**✅ Production Ready**: PostgreSQL slow query analysis with AI-powered recommendations  
 **✅ Production Ready**: MongoDB slow query analysis with real-time profiler integration and multi-format reporting  
-**🚧 Traditional SQL**: MySQL and SQL Server support in v0.4.0 (Q3 2026)
+**🚧 Planned**: MySQL and SQL Server support (see Roadmap)
 
-> **🚀 NEW in v0.2.0**: MongoDB support is now fully available! Use `iqtoolkit-analyzer mongodb` to analyze your MongoDB performance with real-time profiler integration, comprehensive indexing recommendations, and multi-format reports.
+> **🚀 v0.2.2**: MongoDB support and configurable AI providers (Ollama + OpenAI) are fully available.
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![OpenAI](https://img.shields.io/badge/AI-OpenAI%20Only%20v0.1.x-orange.svg)
-![Ollama](https://img.shields.io/badge/AI-Ollama%20Coming%20v0.2.0-blue.svg)
+![AI Providers](https://img.shields.io/badge/AI-Ollama%20%26%20OpenAI-blue.svg)
 ![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%20Ready-336791?logo=postgresql&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/database-MongoDB%20Ready-47A248?logo=mongodb&logoColor=white)
 ![MySQL](https://img.shields.io/badge/database-MySQL%20Planned%20v0.4.0-4479A1?logo=mysql&logoColor=white)
@@ -75,17 +74,33 @@ IQToolkit Analyzer automatically analyzes your **PostgreSQL** and **MongoDB** sl
 | **SQL Server** | 🚧 Planned | v0.4.0 | Q3 2026 |
 
 **AI Provider Support:**
-| AI Provider | Status | Version | Timeline |
-|------------|--------|---------|----------|
-| **OpenAI GPT** | ✅ **Current Only** | v0.1.x | Available now |
-| **Ollama (Local)** | 🚧 **Default in Future** | v0.2.0+ | Nov 2025 - Q1 2026 |
-| **Multiple Providers** | 🚧 Configurable | v0.2.0+ | Nov 2025 - Q1 2026 |
+| AI Provider | Status | Version |
+|------------|--------|---------|
+| **Ollama (Local/Remote)** | ✅ Supported | v0.2.2+ |
+| **OpenAI GPT** | ✅ Supported | v0.1.x+ |
 
 > **📢 MongoDB Ready**: MongoDB slow query analysis is now available! Use the `mongodb` command to analyze your MongoDB performance.
 > 
 > **📢 Want to influence MySQL/SQL Server development?** Check out our [future database sample directories](docs/sample_logs/) and share your specific requirements!
 
 > **v0.1.6 Release Note**: This is the **final v0.1.x release with new features**. It includes comprehensive architecture documentation and prepares the codebase for multi-database support coming in v0.4.0. All references have been updated from "PostgreSQL-specific" to "database log analyzer" to reflect our roadmap for MySQL and SQL Server support. Future v0.1.x releases (v0.1.7+) will contain **bug fixes only** - all new features move to v0.2.0+.
+
+
+## 🧩 Monorepo Overview
+
+This repository now hosts a modular structure to support future services while keeping development fast:
+
+```
+iqtoolkit-analyzer/
+├── iqtoolkit_analyzer/      # Current CLI package (to be service-ized)
+├── iqtoolkit-contracts/     # Shared Pydantic models (Poetry package)
+├── iqtoolkit-iqai/          # AI Copilot service (Poetry package)
+├── iqtoolkithub/            # Orchestration gateway (Poetry package)
+├── iqtoolkit-deployment/    # Helm charts and deployment assets
+└── docs/                    # Documentation and samples
+```
+
+See [ROADMAP.md](ROADMAP.md) for the phase-by-phase plan.
 
 
 ### Key Features
@@ -112,14 +127,32 @@ IQToolkit Analyzer automatically analyzes your **PostgreSQL** and **MongoDB** sl
   - **v0.2.0+**: Local Ollama models by default (enterprise-safe)
 - 🔧 **Extensible**: Future-ready architecture supports multiple databases and AI providers
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Monorepo + Poetry)
 
 > **⚡ Ready to analyze PostgreSQL or MongoDB slow queries right now?** Follow the installation below.  
 > **🔮 Planning for MySQL/SQL Server?** [Join the early feedback program](https://github.com/iqtoolkit/iqtoolkit-analyzer/discussions) to shape v0.4.0 development!
 
 ### Installation
 
-#### Option A: Using uv (Recommended - Fast & Modern)
+#### Preferred: Poetry
+
+```bash
+git clone https://github.com/iqtoolkit/iqtoolkit-analyzer.git
+cd iqtoolkit-analyzer
+
+# Install Poetry if needed
+curl -sSL https://install.python-poetry.org | python3 -
+
+# Install dependencies for shared/contracts and services
+cd iqtoolkit-contracts && poetry install && cd -
+cd iqtoolkit-iqai && poetry install && cd -
+cd iqtoolkithub && poetry install && cd -
+
+# Analyzer CLI (root package)
+poetry install
+```
+
+#### Option A: Using uv (legacy)
 
 1. **Install uv** (if not already installed):
 ```bash
@@ -131,8 +164,8 @@ pip install uv
 
 2. **Clone and setup:**
 ```bash
-git clone https://github.com/iqtoolkit/slow-query-doctor.git
-cd slow-query-doctor
+git clone https://github.com/iqtoolkit/iqtoolkit-analyzer.git
+cd iqtoolkit-analyzer
 
 # Quick setup with uv
 make setup
@@ -211,17 +244,17 @@ python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27
 
 #### Advanced Usage Examples
 ```bash
-# PostgreSQL: Analyze top 5 slowest queries (uv)
-uv run python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
+# PostgreSQL: Analyze top 5 slowest queries (Poetry)
+poetry run python -m iqtoolkit_analyzer postgresql docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 
 # MongoDB: Generate multiple report formats
-uv run python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports --format json html markdown
+poetry run python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports --format json html markdown
 
 # PostgreSQL: Get more detailed AI analysis (uv)
-uv run python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
+poetry run python -m iqtoolkit_analyzer postgresql docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
 
 # MongoDB: Enable verbose debug output
-uv run python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports --verbose
+poetry run python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports --verbose
 
 # Traditional approach for any of the above
 python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
@@ -229,11 +262,11 @@ python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816
 
 #### With Your Own Logs
 ```bash
-# Basic analysis (uv)
-uv run python -m iqtoolkit_analyzer /path/to/your/postgresql.log --output analysis_report.md
+# Basic analysis (Poetry)
+poetry run python -m iqtoolkit_analyzer /path/to/your/postgresql.log --output analysis_report.md
 
 # Advanced options (uv)
-uv run python -m iqtoolkit_analyzer /path/to/your/postgresql.log \
+poetry run python -m iqtoolkit_analyzer /path/to/your/postgresql.log \
   --output detailed_report.md \
   --top-n 10 \
   --min-duration 1000 \
@@ -502,8 +535,8 @@ Replace the correlated subquery with a JOIN or window function. Create indexes o
 
 ### PostgreSQL Analysis
 ```bash
-# With uv (recommended)
-uv run python -m iqtoolkit_analyzer postgresql [LOG_FILE] [OPTIONS]
+# With Poetry (recommended)
+poetry run python -m iqtoolkit_analyzer postgresql [LOG_FILE] [OPTIONS]
 
 # Traditional approach
 python -m iqtoolkit_analyzer postgresql [LOG_FILE] [OPTIONS]
@@ -522,8 +555,8 @@ python -m iqtoolkit_analyzer postgresql [LOG_FILE] [OPTIONS]
 
 ### MongoDB Analysis
 ```bash
-# With uv (recommended)
-uv run python -m iqtoolkit_analyzer mongodb [OPTIONS]
+# With Poetry (recommended)
+poetry run python -m iqtoolkit_analyzer mongodb [OPTIONS]
 
 # Traditional approach
 python -m iqtoolkit_analyzer mongodb [OPTIONS]

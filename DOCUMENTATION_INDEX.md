@@ -25,9 +25,6 @@ Welcome to the Iqtoolkit Analyzer documentation! This guide helps you navigate a
 - [**CONTRIBUTING.md**](CONTRIBUTING.md) - Complete contributor guide with Git Flow, commit conventions, and review process
 - [**Development Environment Setup**](docs/dev-environment-setup.md) - Complete local dev setup (Ubuntu, Ollama, system requirements)
 - [**CODE_OF_CONDUCT.md**](CODE_OF_CONDUCT.md) - Community guidelines and standards
-- [**VERSION_MANAGEMENT.md**](VERSION_MANAGEMENT.md) - Automated version synchronization system
-
-### **For Repository Maintainers**
 - [**BRANCH_PROTECTION.md**](BRANCH_PROTECTION.md) - Repository governance and branch protection setup
 - [**ARCHITECTURE.md**](ARCHITECTURE.md) - System architecture and extension points
 - [**TECHNICAL_DEBT.md**](TECHNICAL_DEBT.md) - Known limitations and areas for improvement
@@ -46,6 +43,7 @@ source venv/bin/activate
 
 # Development commands (all require ./venv)
 make validate          # Check environment setup
+ - [**Monorepo Guide**](docs/monorepo.md) - Working with Poetry and path dependencies
 make setup             # Install deps + git hooks  
 make help              # See all available commands
 

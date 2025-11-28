@@ -1,4 +1,3 @@
-```markdown
 # Release Process & Versioning
 
 This document describes the automated, single-source-of-truth release steps used by the project. It is the published (docs/) companion to the internal branching strategy in `notes/GITHUB_Branching_Release_Strategy.md`.
@@ -43,7 +42,7 @@ Release steps (order: 1 → 2 → 3)
 - Add container image scanning (Trivy or GitHub Container Scanning) before images are published.
 - Add static analysis (CodeQL/Bandit) as part of CI and include those status checks in branch protection rules.
 
-Where to run the propagation
+## Where to run the propagation
 
 Local-first (recommended): run the propagation script locally and create a PR for review.
 
@@ -62,6 +61,19 @@ python3 scripts/propagate_version.py
 ```
 
 Alternatively, prefer creating a `bump-version/*` or `release/*` branch, run the script locally on that branch, commit and push, open a PR for review, then merge and tag from `main` once approved.
+
+## Packaging & Publishing (Poetry)
+
+For packages intended for PyPI (e.g., `iqtoolkit-contracts`, and later the Analyzer package):
+
+```bash
+# Build wheel and sdist
+poetry build
+
+# Publish to PyPI (configure token once)
+poetry config pypi-token.pypi <YOUR_TOKEN>
+poetry publish
+```
 
 Notes and best practices
 

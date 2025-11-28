@@ -55,119 +55,100 @@
 - [x] **MongoDB slow query analyzer** (complete with profiler integration)
 - [x] **Enhanced configuration system** (expanded .iqtoolkit-analyzer.yml options)
 - [x] **HTML report generation** (interactive dashboards)
-- [x] **Multi-file analysis** (batch processing)
-- [x] **Ollama integration** (arctic-text2sql-r1:7b default model)
-- [x] **OpenAI integration** (gpt-4o-mini default model)
-- [x] **Configurable LLM providers** via LLMConfig
-- [x] **Custom Ollama host support** for self-hosted deployments
+# 🚦 IQToolkit Analyzer Roadmap
+
+This roadmap reflects the current state at v0.2.2 and aligns with the multi-phase central plan (Phase 0–5) for evolving the platform to a modular, service-oriented architecture inside a single monorepo.
 
 ---
 
-## v0.2.3 - PostgreSQL EXPLAIN + MongoDB Enhancements (Q1 2026) 🎯 NEXT
+## Current Release: v0.2.2 ✅ STABLE
 
-**Focus:** Advanced query plan analysis and MongoDB optimization
+MongoDB support and configurable AI providers are fully shipped.
 
-**PostgreSQL EXPLAIN Analyzer (RFC-002):**
-- [ ] **EXPLAIN plan parser** (JSON/YAML formats)
+**Highlights**
+- ✅ MongoDB slow query analyzer with profiler integration
+- ✅ MongoDB query pattern recognition and normalization
+- ✅ Enhanced configuration system (expanded YAML + MongoDB options)
+- ✅ Multi-format reporting (JSON, Markdown, HTML)
+- ✅ CLI integration with database-specific subcommands
+- ✅ Configurable AI providers (Ollama + OpenAI)
+- ✅ Privacy-first AI with local Ollama support
+- ✅ Flexible model configuration (custom hosts, multiple models)
 - [ ] **Execution metrics extraction** (performance, I/O, estimation accuracy)
 - [ ] **Anti-pattern detection** (seq scans, inefficient joins, poor filters)
 - [ ] **Index recommendations** from EXPLAIN analysis
-- [ ] **Unified reporting** (integrate EXPLAIN insights into existing reports)
-- [ ] **LLM-powered insights** for complex execution plans
-- [ ] **PostgreSQL 9.6-16 support** with version-specific handling
+## v0.2.3 - PostgreSQL EXPLAIN + MongoDB Enhancements (Q1 2026) 🎯 NEXT
+
+Focus: Advanced query plan analysis (PostgreSQL EXPLAIN per RFC-002) and MongoDB improvements.
+
+**PostgreSQL EXPLAIN Analyzer (RFC-002):**
+- [ ] EXPLAIN plan parser (JSON/YAML)
+- [ ] Execution metrics extraction (performance, I/O, estimation accuracy)
+- [ ] Anti-pattern detection (seq scans, inefficient joins, poor filters)
+- [ ] Index recommendations from EXPLAIN analysis
+- [ ] Unified reporting (integrate EXPLAIN insights)
+- [ ] LLM-powered insights for complex plans
+- [ ] PostgreSQL 9.6–16 support with version-specific handling
 
 **MongoDB Enhancements:**
-- [ ] **MongoDB aggregation pipeline optimization** recommendations
-- [ ] **MongoDB indexing strategy** analysis and suggestions
-- [ ] **Query complexity scoring and classification**
-- [ ] **Enhanced anti-pattern detection** for MongoDB-specific issues
+- [ ] Aggregation pipeline optimization recommendations
+- [ ] Indexing strategy analysis and suggestions
+- [ ] Query complexity scoring and classification
+- [ ] Enhanced anti-pattern detection (MongoDB-specific)
 
 **Developer Experience:**
-- [ ] **FastAPI backend** for programmatic access (optional REST API)
-- [ ] **Improved error messages** and troubleshooting guides
-- [ ] **Performance benchmarks** and optimization documentation
-
----
-
-## v0.3.0 - MySQL & SQL Server Support (Q2 2026) 📋 PLANNED
+- [ ] Optional FastAPI backend for programmatic access
+- [ ] Improved error messages and troubleshooting
+- [ ] Performance benchmarks and docs
 
 **Focus:** Expand to traditional SQL databases (moved up from v0.4.0)
 
-**MySQL Support:**
-- [ ] **MySQL slow query log parser** (standard and JSON formats)
-- [ ] **MySQL-specific anti-patterns** (covering indexes, table scans, temp tables)
-- [ ] **InnoDB-specific optimizations** (buffer pool, transaction isolation)
-- [ ] **MySQL EXPLAIN analysis** (including EXPLAIN FORMAT=JSON)
+## v0.3.0 - Platform Modularity & Orchestration (Q2 2026) 📋 PLANNED
 
-**SQL Server Support:**
-- [ ] **Extended Events parser** (query performance tracking)
-- [ ] **Query Store integration** (if available)
-- [ ] **SQL Server execution plan analysis** (XML format)
-- [ ] **SQL Server-specific recommendations** (indexes, statistics, query hints)
+Focus: Solidify the modular architecture and introduce orchestration.
 
-**Unified Features:**
-- [ ] **Cross-database performance comparison** (PostgreSQL + MongoDB + MySQL + SQL Server)
-- [ ] **Database-agnostic query analysis engine** (shared anti-pattern detection)
-- [ ] **Unified configuration** for multiple database types
-- [ ] **Comparison reports** (identify slowest queries across all databases)
+**Service Modules (Monorepo):**
+- [ ] Analyzer service (deterministic engine; optional API)
+- [ ] IQAI service (LLM explanations; pydantic-ai)
+- [ ] Hub gateway (orchestration; calls Analyzer + IQAI)
+- [ ] Shared contracts (Pydantic models; path deps)
 
+**Deployment:**
+- [ ] Helm charts (component + umbrella)
+- [ ] CI/CD pipelines (dev → staging → prod)
 ---
 
-## v0.4.0 - Self-Learning & ML Intelligence (Q3 2026) 📋 PLANNED
+## Central Plan Alignment (Monorepo Phases)
 
-**Focus:** ML-based intelligence and historical tracking
+The following summarizes the central-plan execution inside this monorepo:
 
-**Historical Analysis:**
+- ✅ Phase 0: Foundations & Separation
+	- 0.1: Scaffolding created — `iqtoolkit-contracts/`, `iqtoolkit-iqai/`, `iqtoolkithub/`, `iqtoolkit-deployment/`
+	- 0.2: Shared contracts package (pending models)
+	- 0.3: Current repo cleanup (pending: isolate analyzer code)
+- 🛠️ Phase 1: Analyzer Service Refactor (planned)
+- 🛠️ Phase 2: IQAI Copilot Service (planned)
+- 🛠️ Phase 3: Hub Orchestration (planned)
+- 🛠️ Phase 4: Deployment & Environments (planned)
+- 🛠️ Phase 5: Production Readiness (planned)
 - [ ] **Track query performance over time** (SQLite/PostgreSQL storage)
 - [ ] **Trend analysis** (queries getting slower/faster over time)
 - [ ] **Automatic baseline detection** (establish normal performance)
-- [ ] **Performance regression detection** (alert on degradation)
+## Database Expansion (Beyond v0.3.x)
 
-**Machine Learning:**
-- [ ] **ML-based anomaly detection** for new slow queries
-- [ ] **Identify performance regression patterns** (recurring issues)
-- [ ] **Confidence scoring** for recommendations (based on historical success)
-- [ ] **Predictive alerts** for queries likely to become slow
-- [ ] **Learn from user feedback** (which recommendations worked)
+As Analyzer modularizes, we will expand to MySQL and SQL Server:
 
-**Integration:**
-- [ ] **CI/CD integration** (fail builds on performance regression)
-- [ ] **Prometheus/Grafana integration** (real-time monitoring)
-- [ ] **Alerting system** (Slack/Teams/email notifications)
+**MySQL**
+- [ ] Slow query log parser (standard + JSON)
+- [ ] MySQL-specific anti-patterns
+- [ ] InnoDB-focused optimizations
+- [ ] EXPLAIN FORMAT=JSON analysis
 
----
-
-## v1.0.0 - Production Ready (Q4 2026)
-
-**Focus:** Enterprise-grade stability and features
-
-- [ ] Web UI for easier analysis
-- [ ] API for programmatic access
-- [ ] Authentication and multi-user support
-- [ ] Scheduled analysis and alerting
-- [ ] Integration with monitoring tools (Prometheus, Grafana)
-- [ ] Performance regression CI/CD integration
-- [ ] Comprehensive test coverage
-- [ ] Enterprise support options
-
----
-
-## Future Ideas (Backlog)
-
-- Real-time query monitoring integration
-- Automated optimization application (with approval workflow)
-- Query workload simulator
-- Cost estimation for cloud databases
-- Integration with query plan visualizers
-- Mobile app for on-call DBAs
-- Slack/Teams notification integration
-- AI-powered query rewriting suggestions
-
----
-
-## Community Requests
-
-Track feature requests from users here:
+**SQL Server**
+- [ ] Extended Events parser
+- [ ] Query Store integration (if available)
+- [ ] Execution plan analysis (XML)
+- [ ] SQL Server-specific recommendations
 
 - **Ravi Bhatia:** ML/self-learning system for recommendations → BACKLOG (v0.3.0, Q2 2026)
 - **Uri Dimant:** Query rewrites (not just indexes) → IMPLEMENTED ✅
@@ -176,12 +157,12 @@ Track feature requests from users here:
 
 | Version | Timeline | Status | Key Features |
 |---------|----------|--------|--------------|
-| v0.1.5 | ✅ SHIPPED | Mature | PostgreSQL analyzer with OpenAI only |
-| v0.1.6 | ✅ SHIPPED | Mature | Final v0.1.x feature release, documentation |
-| v0.2.2 | ✅ **STABLE** | **Current** | **MongoDB + Ollama/OpenAI providers** 🚀 |
+| v0.1.5 | ✅ Shipped | Historical | PostgreSQL analyzer with OpenAI only |
+| v0.1.6 | ✅ Shipped | Historical | Final v0.1.x feature release, documentation |
+| v0.2.2 | ✅ **Stable** | **Current** | **MongoDB + Ollama/OpenAI providers** |
 | v0.2.3 | Q1 2026 | 🎯 Next | **PostgreSQL EXPLAIN analyzer + MongoDB enhancements** |
-| ~~v0.2.4~~ | ~~Q1 2026~~ | ❌ **Cancelled** | Features merged into v0.2.2 and v0.2.3 |
-| v0.3.0 | Q2 2026 | 📋 Planned | **MySQL + SQL Server support** (moved up) |
+| ~~v0.2.4~~ | ~~Q1 2026~~ | ❌ Cancelled | Features merged into v0.2.2/0.2.3 |
+| v0.3.0 | Q2 2026 | 📋 Planned | **Modular services + orchestration** |
 | v0.4.0 | Q3 2026 | 📋 Planned | **ML/self-learning, anomaly detection** |
 | v1.0.0 | Q4 2026 | 📋 Planned | Web UI, enterprise features |
 
@@ -191,18 +172,19 @@ Track feature requests from users here:
 
 ## Release & Versioning (short)
 
-See the published release process and versioning guide in the documentation: `docs/release-process.md`.
+See `docs/release-process.md`.
+
 Key points:
 - `VERSION` at repo root is the single source of truth.
-- Use the provided GitHub Action `/.github/workflows/propagate-version.yml` to propagate and tag releases.
-- Automate changelog generation (Release Drafter or conventional-changelog) and add security scans to CI for release gating.
+- Use the `scripts/propagate_version.py` utility (with `--dry-run` first) to sync versions and create tags.
+- For packaging, use Poetry: `poetry build && poetry publish` (service packages that are meant for PyPI).
 
 
 ## Contributing
 
 See issues labeled with `good-first-issue` or `help-wanted` for ways to contribute!
 
-Questions or suggestions? Email: gio@gmartinez.net
+Questions or suggestions? Email: gio@iqtoolkit.ai
 ---
 
 **Made with ❤️ for Database performance optimization**

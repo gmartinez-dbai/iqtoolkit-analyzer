@@ -197,3 +197,6 @@ pids
 
 # Optional eslint cache
 .eslintcache
+
+# Notes and personal files
+central-plan
